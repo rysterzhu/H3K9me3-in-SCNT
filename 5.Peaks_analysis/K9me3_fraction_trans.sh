@@ -1,5 +1,3 @@
-wdir=~/workspace/9.NT-ChIP/c.K9me3/6.fraction-trans/4.CC-6h-14h-NT2cell-MII-Sperm-PN3-PN5-NF2cell
-pdir=~/workspace/9.NT-ChIP/c.K9me3/1.MACS2-80M-P3/2.500bp-frations
 
 cp $pdir/[61POSC]*.fraction $wdir
 cp $pdir/*2cell.fraction $wdir 
@@ -33,19 +31,9 @@ awk 'BEGIN{print "Cluster\tMotif\tPvalue\tTarget"} FNR>1{split(FILENAME,temp,"."
 awk 'BEGIN{print "Cluster\tMotif\tPvalue\tTarget"} FNR>1{split(FILENAME,temp,".");split($3,temp2,"e");gsub("%","",$7);print temp[1],$1,temp2[2],$7}' *Rpg.motif/knownResults.txt > merge.cluster2.motif
 
 
-ddir=~/workspace/9.NT-ChIP/3.deeptools/5.compareByInput/a.keep-lowqual
-key=map2rpg
-computeMatrix scale-regions -S $ddir/CC*bw $ddir/6h*bw $ddir/14h*bw $ddir/NT-2cell*bw --smartLabels -R Rpg.bed UnRpg.bed -o $key.gz --outFileNameMatrix $key.tab -m 1000 -a 2000 -b 2000 -bs 50 --sortRegions descend --sortUsing mean -p 32 &
-wait
-plotHeatmap -m $key.gz -out $key.png --dpi 360 --sortRegions descend --sortUsing mean --sortUsingSamples 2 --colorList "blue,white,red" --colorNumber 100000 --whatToShow "plot, heatmap and colorbar" --zMin -3 --zMax 3 \
---startLabel "" --endLabel "" -T "K9me3 to Rpg" &
-
-
 #############
 #map DNase to peaks #Zhangyi, CC 1cell
-wdir=~/workspace/9.NT-ChIP/c.K9me3/6.fraction-trans/4.CC-6h-14h-NT2cell-MII-Sperm-PN3-PN5-NF2cell
-wdir=~/workspace/9.NT-ChIP/c.K9me3/6.fraction-trans/6.500bp/1.CC-6h-14h-NT2cell-PN3-PN5-NF2cell
-ddir=~/workspace/9.NT-ChIP/2.public/f.Zhangyi/5.bamCoverage
+
 
 key=DNase-bw.cluster2
 computeMatrix reference-point -R $wdir/*Rpg.bed -S $ddir/*.bw -out $wdir/$key.gz --referencePoint center \
@@ -59,15 +47,8 @@ computeMatrix reference-point -R $wdir/CC-rpg.bed $wdir/6h-rpg.bed $wdir/14h-unr
 plotProfile -m $wdir/$key.gz -out $wdir/$key.perGroup.pdf --refPointLabel "regions center" --perGroup
 plotProfile -m $wdir/$key.gz -out $wdir/$key.pdf --refPointLabel "regions center"
 
-ddir=~/workspace/9.NT-ChIP/2.public/f.Zhangyi/2.bwa/c.merge_rep
-wdir=~/workspace/9.NT-ChIP/c.K9me3/6.fraction-trans/1.CC-6h-14h-NT2cell-MII-PN3-PN5-NF2cell/2.500bp/2.4-cluster/
 for i in $wdir/*bed; do o=$(basename $i .bed)
 multiBamSummary BED-file -b $ddir/cc_dnase.redun.bam $ddir/1cell_dnase.redun.bam --BED $i -out $wdir/DNase-$o.gz --outRawCounts $wdir/DNase-$o.tab -l CC 1cell -p 64 --extendReads 150 &
 done
 awk 'FNR>1{print $0,FILENAME}' *tab > DNase.boxplot.txt
 
-##boxplot DNase
-wdir=~/workspace/9.NT-ChIP/c.K9me3/6.fraction-trans/6.500bp/1.CC-6h-14h-NT2cell-PN3-PN5-NF2cell
-ddir=~/workspace/9.NT-ChIP/2.public/f.Zhangyi/6.multiBamSummary
-key=DNase-bw.cluster2
-Rmd

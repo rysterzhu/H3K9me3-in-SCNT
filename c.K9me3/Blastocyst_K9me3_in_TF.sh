@@ -1,9 +1,3 @@
-wdir=~/workspace/9.NT-ChIP/3.deeptools/c.TF-blastocyst/3.each-TF-K9me3/c.log2ratio
-pdir=~/workspace/9.NT-ChIP/3.deeptools/c.TF-blastocyst/mergedpeak
-ddir=~/workspace/9.NT-ChIP/e.Keep_lowqual_K9me3/1.merge-reps
-ddir2=~/workspace/9.NT-ChIP/1.align/h.K9me3_oeMcrs1/c.merge_rep
-ddir3=~/workspace/9.NT-ChIP/1.align/i.K9me3_sertoli/c.merge_rep
-mkd $wdir/logs
 #计算TF的peaks上的K9me3信号
 mult 20
 for i in $pdir/*bed; do read -u 9; { 
@@ -32,10 +26,6 @@ intersectBed -a $i -b ~/workspace/9.NT-ChIP/c.K9me3/b.fraction-blastocyst/1.clus
 
 
 #计算kruskal test的pvalue和FC
-#for i in *filter; do  Rscript ~/R/9.NTChIP/5.Deeptools/dunnTest.R $i ; done
-wdir=~/workspace/9.NT-ChIP/3.deeptools/c.TF-blastocyst/3.each-TF-K9me3
-pdir=~/workspace/9.NT-ChIP/3.deeptools/c.TF-blastocyst/mergedpeak
-ddir=~/workspace/9.NT-ChIP/1.align/6.links-merge-redun
 trap "exec 1000>&-;exec 1000<&-;exit 0" 2;mkfifo /tmp/$$.fifo;exec 1000<>/tmp/$$.fifo;for((i=0;i<16;i++));do echo >&1000; done
 for i in *filter; do read -u 1000{; Rscript ~/R/9.NTChIP/5.Deeptools/dunnTest.R $i ; echo >&1000}& done
 

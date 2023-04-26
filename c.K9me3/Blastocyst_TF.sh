@@ -11,12 +11,6 @@ t2=$(cat $s2.bed | wc -l);
 echo -e $k"\t"$o1"\t"$o2"\t"$t1"\t"$t2 >> overlap-number.tab)& 
 done
 
-
-
-
-awk 'NR>1&&FNR<NR{if(substr($1,1,1)""tolower(substr($1,2)) in a){print $1,substr($1,1,1)""tolower(substr($1,2))}else{print $1,$1}} NR==FNR{a[$4]}' ~/ann/Uniq.mm10/mm10.uniq-gene.bed overlap-number.tab > ../TF2gene.tab
-
-
 awk 'NR>1&&FNR<NR{if(substr($1,1,1)""tolower(substr($1,2)) in a){print $1,substr($1,1,1)""tolower(substr($1,2))}} NR==FNR{a[$4]}' ~/ann/Uniq.mm10/mm10.uniq-gene.bed overlap-number.tab > ../TF2gene.tab
 
 cd ~/workspace/9.NT-ChIP/3.deeptools/c.TF-blastocyst/1.fisher-test 
@@ -55,7 +49,6 @@ for(i in g){print i,g[i],exp1[i],res[g[i]]}}' TF2gene.tab ~/workspace/9.NT-ChIP/
 
 awk 'NR==1{print $0,"constrast"} FNR>1{split(FILENAME,temp,"[\\./]");print $0,temp[2]}' */exp.TF.pvalue.tab > all.exp.TF.qvalue.tab
 
-cd ~/workspace/9.NT-ChIP/3.deeptools/a.PCA-blastocyst/7.oeMcrs1-merged
 mkd annStats
 awk '{print $1,$2,$3 > $7".bed"}' cluster-ICM-TE.tab
 for i in NT NF; do 
@@ -73,7 +66,6 @@ clusterPM cluster.gene cluster.BP GO BP
 
 intersectBed -a ~/ann/Uniq.mm10/all.gene/promoter_2k-2k.bed -b ../cluster-ICM-TE.tab -wo |sort -k12rg,12 > cluster-ICM-TE.promoter.tab
 #############################
-##############
 for i in Cluster*bed; do nohup annotatePeaks.pl $i mm10 -annStats annStat/${i/bed/stat} > annStat/${i/bed/txt} 2> annStat/${i/bed/log} & done
 awk 'NR==1{print $0,"sample"} FNR==1{gsub(".stat","",FILENAME)} FNR>14&&$1!~/Annotation/&&$1!~/\?/{print $0,FILENAME}' *stat  > all.stats.tab
 

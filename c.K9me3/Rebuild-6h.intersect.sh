@@ -32,20 +32,11 @@ END{for(i in b){print (i in a)?"Inherited":"Denovo",i};for(i in a){if(!(i in b))
 clusterPM flags-PN3.promoter flags-PN3 GO BP &
 Rscript ~/R/clusterProfiler/plot-dot-clusterProfiler.R
 
-#########################2021年7月17日 CC-6h K9me3 in Oocyte Sperm Zygote
-wdir=~/workspace/9.NT-ChIP/c.K9me3/2.6h-rebuild/9.CC-6h_K9me3_in_OSZ
-ddir=~/workspace/9.NT-ChIP/c.K9me3/1.MACS2-60M-P3/filter-rpkm1
-ddir2=~/workspace/9.NT-ChIP/3.deeptools/9.multiBamSummary/1.merge-rep
-
 echo -e "peak\tsample\tvalue" > merge.log2ratio
 for i in Oocyte Sperm PN3 PN5; do 
 for j in CC 6h; do 
 awk -v i=$i -v j=$j 'NR==FNR{a[$1"\t"$2]} NR>FNR&&($1"\t"$2 in a){print i,j,$4}' $ddir/$i.fraction $ddir2/$j.1k.m1.log2ratio >> merge.log2ratio
 done;done
-
-
-ddir=~/workspace/9.NT-ChIP/1.align/d.sih2-K9me3/1.mm10/c.merge_rep/rep34
-mkcd ~/workspace/9.NT-ChIP/c.K9me3/2.6h-rebuild/6.sih2/merge_rep
 
 awk 'NR==FNR{a[$2]=$1} NR>FNR{if($4 in a){print $0,a[$4]}}' ../../8.promoter-with-peaks/flags-oocyte2.promoter ~/ann/Uniq.mm10/all.gene/promoter_1k-1k.bed > merge.promoter.bed
 for i in control sih2; do

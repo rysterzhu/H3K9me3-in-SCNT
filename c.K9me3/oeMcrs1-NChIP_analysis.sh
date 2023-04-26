@@ -1,8 +1,3 @@
-cd ~/workspace/9.NT-ChIP/c.K9me3/c.TF-blastocyst/6.fisher-tests_keeplowqual/oeMcrs1-ICM.oeMcrs1-TE
-ln -s ~/workspace/9.NT-ChIP/c.K9me3/1.MACS2-60M-P3/NT-ICM_oeMcrs1_peaks.broadPeak NT-ICM_oeMcrs1.bed
-ln -s ~/workspace/9.NT-ChIP/c.K9me3/1.MACS2-60M-P3/NT-TE_oeMcrs1_peaks.broadPeak NT-TE_oeMcrs1.bed
-#intersectBed -a NT-ICM_oeMcrs1_peaks.broad.fraction -b NT-TE_oeMcrs1.fraction -v -f 0.5 > NT-ICM_oeMcrs1.bed
-#intersectBed -b NT-ICM_oeMcrs1.fraction -a NT-TE_oeMcrs1.fraction -v -f 0.5 > NT-TE_oeMcrs1.bed
 
 s1=NT-ICM_oeMcrs1;s2=NT-TE_oeMcrs1
 echo -e "TF\toverlap1\toverlap2\ttotal1\ttotal2" > overlap-number.tab
@@ -24,10 +19,6 @@ b ;done
 
 
 ##################################################expression in peaks
-wdir=~/workspace/9.NT-ChIP/c.K9me3/e.oeMcrs1/7.expression_in_peaks
-pdir=~/workspace/9.NT-ChIP/c.K9me3/1.MACS2-60M-P3
-ddir=~/workspace/9.NT-ChIP/b.RNA/g.bamCoverage/3.siMIT-reps
-
 subtractBed -a $pdir/NT-ICM_oeMcrs1_peaks.broadPeak -b $pdir/NT-ICM_peaks.broadPeak | awk '$3-$2>200'> $wdir/NT-ICM_oeMcrs1.subtract.peak
 subtractBed -b $pdir/NT-ICM_oeMcrs1_peaks.broadPeak -a $pdir/NT-ICM_peaks.broadPeak | awk '$3-$2>200'> $wdir/NT-ICM.subtract.peak
 intersectBed -a $pdir/NT-ICM_oeMcrs1_peaks.broadPeak -b $pdir/NT-ICM_peaks.broadPeak > $wdir/NT-ICM.intersect.peak

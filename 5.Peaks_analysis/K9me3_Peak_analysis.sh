@@ -100,24 +100,3 @@ NFC=(PN3 PN5 NF-2cell NF-4cell NF-8cell NF-Morula NF-ICM NF-TE)
 for i in ${NTC[@]} ${NFC[@]}; do
 intersectBed -a ${i}_peaks.broadPeak -b CC_peaks.broadPeak -wao | awk -v stage=$i 'NR==FNR{a+=$NF} NR>FNR{b+=$3-$2} END{print stage,a,b-a}' - ${i}_peaks.broadPeak >> overlapCC.NF-NT-peaks.tab
 done
-
-
-
-
-
-########################
-ddir=~/workspace/9.NT-ChIP/c.K9me3/1.MACS2-60M-P3
-wdir=~/workspace/9.NT-ChIP/5.Peaks_analysis/1.annStats-pdfs/5.K9me3_20210629/annStats
-mkd $wdir
-for i in $ddir/*_peaks.broadPeak; do k=$(basename $i _peaks.broadPeak)
-nohup annotatePeaks.pl $i mm10 -annStats $wdir/$k.txt > $wdir/$k.log &
-done
-cd $wdir
-awk 'NR==1{print $0,"sample"} FNR==1{gsub(".txt","",FILENAME)} FNR>14&&$1!~/Annotation/&&$1!~/\?/{print $0,FILENAME}' *txt  > all.stats.tab
-
-##
-mkd annStats
-for i in *_peaks.broadPeak; do k=$(basename $i _peaks.broadPeak)
-nohup annotatePeaks.pl $i mm10 -annStats annStats/$k.txt > annStats/$k.log &
-done
-cd annStats && awk 'NR==1{print $0,"sample"} FNR==1{gsub(".txt","",FILENAME)} FNR>14&&$1!~/Annotation/&&$1!~/\?/{print $0,FILENAME}' *txt  > all.stats.tab

@@ -1,5 +1,3 @@
-ddir=~/workspace/9.NT-ChIP/c.K9me3/1.MACS2-60M-P3
-wdir=~/workspace/9.NT-ChIP/c.K9me3/5.alluvial
 NT3=(CC 6h 14h NT-2cell NT-4cell NT-8cell NT-Morula NT-ICM NT-TE)
 awk 'FNR==1{gsub("^.*/|.fraction$","",FILENAME)} {print $0,FILENAME}' $ddir/[C61]*fraction $ddir/NT*fraction | datamash -s groupby 1,2,3 collapse 4 > $wdir/fraction.NT.tab
 awk -v samples="${NT3[*]}" 'BEGIN{len=split(samples,S);printf("chr\tstart\tend");for(i=1;i<=len;i++)printf("\t%s",S[i]);printf("\n")}
